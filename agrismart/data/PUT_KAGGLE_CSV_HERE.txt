@@ -1,0 +1,2 @@
+Put the Kaggle file here, named exactly:  Crop_recommendation.csv
+Download: kaggle.com -> search "Crop Recommendation Dataset" (by Atharva Ingle) -> Download.

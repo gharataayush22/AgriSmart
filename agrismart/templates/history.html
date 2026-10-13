@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Saved fields · AgriSmart{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>Saved fields</h1>
+  <p>Every field you save on the advisor page is stored in the SQLite table <code>predictions</code>.</p>
+  {% if rows %}<a class="btn ghost" href="{{ url_for('history_csv') }}">Download as CSV</a>{% endif %}
+</section>
+
+{% if rows %}
+<div class="table-wrap panel">
+<table>
+  <thead><tr><th>Saved</th><th>Field</th><th>Crop</th><th>Confidence</th><th>N</th><th>P</th><th>K</th><th>Temp °C</th><th>Humidity %</th><th>pH</th><th>Rain mm</th><th></th></tr></thead>
+  <tbody>
+  {% for r in rows %}
+    <tr id="row-{{ r.id }}">
+      <td>{{ r.created_at }}</td><td>{{ r.field_name }}</td><td><strong>{{ r.crop }}</strong></td>
+      <td>{{ r.confidence }}%</td><td>{{ r.N|round|int }}</td><td>{{ r.P|round|int }}</td><td>{{ r.K|round|int }}</td>
+      <td>{{ r.temperature }}</td><td>{{ r.humidity|round|int }}</td><td>{{ r.ph }}</td><td>{{ r.rainfall|round|int }}</td>
+      <td><button class="link-btn" data-del="{{ r.id }}" aria-label="Delete {{ r.field_name }}">Delete</button></td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+</div>
+{% else %}
+<div class="panel empty-state">
+  <h2>No saved fields yet</h2>
+  <p>Describe a field on the advisor page and press “Save this field”.</p>
+  <a class="btn" href="{{ url_for('home') }}">Open crop advisor</a>
+</div>
+{% endif %}
+{% endblock %}
+{% block scripts %}
+<script>
+document.querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+  if (!confirm('Delete this saved field?')) return;
+  await fetch('/api/history/' + b.dataset.del, {method: 'DELETE'});
+  document.getElementById('row-' + b.dataset.del).remove();
+  if (!document.querySelector('tbody tr')) location.reload();
+}));
+</script>
+{% endblock %}

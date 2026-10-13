@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}Dashboard · AgriSmart{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>What the data says</h1>
+  <p>Charts are built from the SQLite database using pandas and update as you save fields.</p>
+</section>
+
+<section class="kpis" id="kpis"></section>
+
+<section class="charts">
+  <figure class="panel">
+    <figcaption>Temperature vs rainfall by crop</figcaption>
+    <div class="canvas-box"><canvas id="scatter"></canvas></div>
+  </figure>
+  <figure class="panel">
+    <figcaption>
+      Typical profile of
+      <select id="cropPick" aria-label="Choose a crop"></select>
+    </figcaption>
+    <div class="canvas-box"><canvas id="radar"></canvas></div>
+  </figure>
+  <figure class="panel">
+    <figcaption>Which inputs matter most to the model (%)</figcaption>
+    <div class="canvas-box"><canvas id="importance"></canvas></div>
+  </figure>
+  <figure class="panel">
+    <figcaption>Crops recommended for your saved fields</figcaption>
+    <div class="canvas-box"><canvas id="saved"></canvas></div>
+    <p class="muted empty" id="savedEmpty" hidden>Nothing saved yet. Save a field on the Crop advisor page.</p>
+  </figure>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

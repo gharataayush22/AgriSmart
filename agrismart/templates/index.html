@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block title %}Crop advisor · AgriSmart{% endblock %}
+{% block content %}
+<section class="lab-head">
+  <h1>What should you plant in this soil?</h1>
+  <p>Describe your field with the sliders. The model re-ranks crops every time you move one.</p>
+  <div class="presets" role="group" aria-label="Example fields">
+    <span>Try an example:</span>
+    <button type="button" data-preset="konkan">Konkan paddy belt</button>
+    <button type="button" data-preset="punjab">Maize farm</button>
+    <button type="button" data-preset="vidarbha">Vidarbha black soil</button>
+    <button type="button" data-preset="kerala">Kerala coconut belt</button>
+  </div>
+</section>
+
+<section class="lab-grid">
+  <form id="sliders" class="panel" onsubmit="return false"></form>
+  <aside class="panel result" id="result" aria-live="polite">
+    <p class="muted">Reading your field…</p>
+  </aside>
+</section>
+{% endblock %}
+{% block scripts %}
+<script>const META = {{ meta|tojson }};</script>
+<script src="{{ url_for('static', filename='js/predict.js') }}"></script>
+{% endblock %}

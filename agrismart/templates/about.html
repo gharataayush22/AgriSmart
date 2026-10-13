@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}How it works · AgriSmart{% endblock %}
+{% block content %}
+<section class="page-head">
+  <h1>How it works</h1>
+  <p>Farmers often pick crops by habit. AgriSmart compares a field's soil and weather with what each crop usually grows best in.</p>
+</section>
+
+<section class="steps">
+  <article class="panel">
+    <h2>1. Data in SQLite</h2>
+    <p>pandas reads {{ n }} rows ({{ crops }} crops) from the {{ source }} and writes them to the <code>samples</code> table. Crop facts live in <code>crops</code>, and your saved fields in <code>predictions</code>.</p>
+  </article>
+  <article class="panel">
+    <h2>2. Model in scikit-learn</h2>
+    <p>A Random Forest of 150 decision trees learns the pattern from 80% of the rows. On the other 20% it is right <strong>{{ accuracy }}%</strong> of the time.</p>
+  </article>
+  <article class="panel">
+    <h2>3. Advice with pandas</h2>
+    <p>For the winning crop, each input is compared with the crop's average and spread. More than one standard deviation away becomes a plain-language tip.</p>
+  </article>
+  <article class="panel">
+    <h2>4. Website in Flask</h2>
+    <p>The sliders send JSON to <code>/api/predict</code>. The page redraws with the answer, and Chart.js draws the dashboard from <code>/api/stats</code>.</p>
+  </article>
+</section>
+
+<section class="panel note">
+  <h2>Dataset</h2>
+  <p>Source: <strong>{{ source }}</strong>. Each row is one field: N, P, K, temperature, humidity, pH, rainfall and the best crop (label). NumPy is used for the top-3 ranking and the radar chart scaling.</p>
+</section>
+{% endblock %}
